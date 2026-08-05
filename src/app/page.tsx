@@ -5,11 +5,11 @@ export default function Home() {
         <h1 className="text-2xl font-semibold text-black dark:text-zinc-50">
           trainNerd
         </h1>
-        <div className="aspect-video w-full overflow-hidden rounded-lg shadow">
+        <div className="overflow-hidden rounded-lg shadow">
           <iframe
-            src="https://www.facebook.com/plugins/video.php?href=https%3A%2F%2Fwww.facebook.com%2Fwatch%2F%3Fv%3D3094440410793804&show_text=false"
-            width="100%"
-            height="100%"
+            src="https://www.facebook.com/plugins/video.php?height=380&href=https%3A%2F%2Fwww.facebook.com%2Fwatch%2F%3Fv%3D3094440410793804&show_text=false&width=500"
+            width={500}
+            height={380}
             style={{ border: "none", overflow: "hidden" }}
             scrolling="no"
             allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
