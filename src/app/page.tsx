@@ -1,22 +1,85 @@
-export default function Home() {
+import type { CSSProperties } from "react";
+import { FlapBoard } from "@/components/FlapBoard";
+import { LogSightingForm } from "@/components/LogSightingForm";
+import { getSightings, getStats } from "@/db/queries";
+import { categoryColor } from "@/lib/categories";
+import { formatSpottedAt } from "@/lib/format";
+
+export default async function Home() {
+  const [sightings, stats] = await Promise.all([getSightings(), getStats()]);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 dark:bg-black">
-      <main className="flex w-full max-w-3xl flex-col items-center gap-6 px-6 py-16">
-        <h1 className="text-2xl font-semibold text-black dark:text-zinc-50">
-          trainNerd
-        </h1>
-        <div className="overflow-hidden rounded-lg shadow">
-          <iframe
-            src="https://www.facebook.com/plugins/video.php?height=380&href=https%3A%2F%2Fwww.facebook.com%2Fwatch%2F%3Fv%3D3094440410793804&show_text=false&width=500"
-            width={500}
-            height={380}
-            style={{ border: "none", overflow: "hidden" }}
-            scrolling="no"
-            allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-            allowFullScreen
-          />
+    <div className="page">
+      <section className="hero">
+        <FlapBoard word="TRAINNERD" />
+        <p className="hero-sub">
+          a life-list for trackside obsessives — every class, every platform, logged.
+        </p>
+        <div className="glow-rule" />
+        <LogSightingForm />
+      </section>
+
+      <section className="log-section">
+        <div className="section-head">
+          <span className="eyebrow">the log</span>
+          <h2 className="section-title">Recent sightings</h2>
+          <p className="section-desc">Logged trackside, newest first.</p>
         </div>
-      </main>
+
+        {sightings.length === 0 ? (
+          <div className="empty-state">
+            <p className="empty-title">No sightings yet.</p>
+            <p className="empty-desc">Be the first to log one.</p>
+          </div>
+        ) : (
+          <div className="ledger">
+            {sightings.map((s) => (
+              <article
+                key={s.id}
+                className="ticket"
+                style={{ "--tab-color": categoryColor(s.category) } as CSSProperties}
+              >
+                <div className="ticket-tab" />
+                <div className="ticket-body">
+                  <div className="ticket-main">
+                    <span className="ticket-category">{s.category}</span>
+                    <span className="ticket-class">
+                      {s.locoClass}
+                      {s.locoNumber ? ` · ${s.locoNumber}` : ""}
+                    </span>
+                    {s.note && <span className="ticket-note">{s.note}</span>}
+                  </div>
+                  <div className="ticket-meta">
+                    {s.location}
+                    <br />
+                    {formatSpottedAt(s.spottedAt)}
+                  </div>
+                </div>
+                <span className="stamp">SPOTTED</span>
+              </article>
+            ))}
+          </div>
+        )}
+      </section>
+
+      <section className="stats">
+        <div className="stat">
+          <span className="stat-num">{stats.classesSpotted}</span>
+          <span className="stat-label">Classes spotted</span>
+        </div>
+        <div className="stat">
+          <span className="stat-num">{stats.stationsVisited}</span>
+          <span className="stat-label">Stations visited</span>
+        </div>
+        <div className="stat">
+          <span className="stat-num">{stats.milesLogged.toLocaleString("en-GB")}</span>
+          <span className="stat-label">Miles logged</span>
+        </div>
+      </section>
+
+      <footer className="footer">
+        <span className="footer-line">trainNerd — a running list, updated trackside.</span>
+      </footer>
     </div>
   );
 }
