@@ -10,12 +10,12 @@ await sql`
     train_number text NOT NULL,
     operator text,
     route text,
-    origin text,
-    destination text,
     station text NOT NULL,
     country text,
     note text,
-    miles integer NOT NULL DEFAULT 0,
+    is_favourite boolean NOT NULL DEFAULT false,
+    is_first_time boolean NOT NULL DEFAULT false,
+    is_rare boolean NOT NULL DEFAULT false,
     spotted_at timestamptz NOT NULL DEFAULT now(),
     created_at timestamptz NOT NULL DEFAULT now()
   )

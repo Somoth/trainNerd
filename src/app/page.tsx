@@ -44,11 +44,16 @@ export default async function Home() {
                   <div className="ticket-main">
                     <span className="ticket-category">{trainTypeLabel(s.trainNumber)}</span>
                     <span className="ticket-class">{s.trainNumber}</span>
-                    {(s.origin || s.destination) && (
-                      <span className="ticket-route">
-                        {s.origin ?? "?"} → {s.destination ?? "?"}
-                      </span>
+                    {(s.isFavourite || s.isFirstTime || s.isRare) && (
+                      <div className="ticket-badges">
+                        {s.isFavourite && (
+                          <span className="badge badge-favourite">★ Favourite</span>
+                        )}
+                        {s.isFirstTime && <span className="badge badge-first">First seen</span>}
+                        {s.isRare && <span className="badge badge-rare">Rare</span>}
+                      </div>
                     )}
+                    {s.route && <span className="ticket-route">{s.route}</span>}
                     {s.operator && <span className="ticket-operator">{s.operator}</span>}
                     {s.note && <span className="ticket-note">{s.note}</span>}
                   </div>
@@ -76,8 +81,8 @@ export default async function Home() {
           <span className="stat-label">Stations visited</span>
         </div>
         <div className="stat">
-          <span className="stat-num">{stats.milesLogged.toLocaleString("en-GB")}</span>
-          <span className="stat-label">Miles logged</span>
+          <span className="stat-num">{stats.rareSightings}</span>
+          <span className="stat-label">Rare sightings</span>
         </div>
       </section>
 

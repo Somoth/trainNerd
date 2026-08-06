@@ -5,12 +5,12 @@ export type Sighting = {
   trainNumber: string;
   operator: string | null;
   route: string | null;
-  origin: string | null;
-  destination: string | null;
   station: string;
   country: string | null;
   note: string | null;
-  miles: number;
+  isFavourite: boolean;
+  isFirstTime: boolean;
+  isRare: boolean;
   spottedAt: string;
 };
 
@@ -19,19 +19,20 @@ type SightingRow = {
   train_number: string;
   operator: string | null;
   route: string | null;
-  origin: string | null;
-  destination: string | null;
   station: string;
   country: string | null;
   note: string | null;
-  miles: number;
+  is_favourite: boolean;
+  is_first_time: boolean;
+  is_rare: boolean;
   spotted_at: string;
 };
 
 export async function getSightings(limit = 20): Promise<Sighting[]> {
   const sql = getDb();
   const rows = (await sql`
-    SELECT id, train_number, operator, route, origin, destination, station, country, note, miles, spotted_at
+    SELECT id, train_number, operator, route, station, country, note,
+           is_favourite, is_first_time, is_rare, spotted_at
     FROM sightings
     ORDER BY spotted_at DESC
     LIMIT ${limit}
@@ -41,12 +42,12 @@ export async function getSightings(limit = 20): Promise<Sighting[]> {
     trainNumber: r.train_number,
     operator: r.operator,
     route: r.route,
-    origin: r.origin,
-    destination: r.destination,
     station: r.station,
     country: r.country,
     note: r.note,
-    miles: r.miles,
+    isFavourite: r.is_favourite,
+    isFirstTime: r.is_first_time,
+    isRare: r.is_rare,
     spottedAt: r.spotted_at,
   }));
 }
@@ -54,13 +55,13 @@ export async function getSightings(limit = 20): Promise<Sighting[]> {
 export type Stats = {
   trainsSpotted: number;
   stationsVisited: number;
-  milesLogged: number;
+  rareSightings: number;
 };
 
 type StatsRow = {
   trains_spotted: number;
   stations_visited: number;
-  miles_logged: number;
+  rare_sightings: number;
 };
 
 export async function getStats(): Promise<Stats> {
@@ -69,14 +70,14 @@ export async function getStats(): Promise<Stats> {
     SELECT
       COUNT(DISTINCT train_number)::int AS trains_spotted,
       COUNT(DISTINCT station)::int AS stations_visited,
-      COALESCE(SUM(miles), 0)::int AS miles_logged
+      COUNT(*) FILTER (WHERE is_rare)::int AS rare_sightings
     FROM sightings
   `) as StatsRow[];
   const row = rows[0];
   return {
     trainsSpotted: row.trains_spotted,
     stationsVisited: row.stations_visited,
-    milesLogged: row.miles_logged,
+    rareSightings: row.rare_sightings,
   };
 }
 
@@ -84,27 +85,27 @@ export async function insertSighting(data: {
   trainNumber: string;
   operator?: string;
   route?: string;
-  origin?: string;
-  destination?: string;
   station: string;
   country?: string;
   note?: string;
-  miles?: number;
+  isFavourite?: boolean;
+  isFirstTime?: boolean;
+  isRare?: boolean;
   spottedAt?: string;
 }) {
   const sql = getDb();
   await sql`
-    INSERT INTO sightings (train_number, operator, route, origin, destination, station, country, note, miles, spotted_at)
+    INSERT INTO sightings (train_number, operator, route, station, country, note, is_favourite, is_first_time, is_rare, spotted_at)
     VALUES (
       ${data.trainNumber},
       ${data.operator ?? null},
       ${data.route ?? null},
-      ${data.origin ?? null},
-      ${data.destination ?? null},
       ${data.station},
       ${data.country ?? null},
       ${data.note ?? null},
-      ${data.miles ?? 0},
+      ${data.isFavourite ?? false},
+      ${data.isFirstTime ?? false},
+      ${data.isRare ?? false},
       ${data.spottedAt ?? new Date().toISOString()}
     )
   `;

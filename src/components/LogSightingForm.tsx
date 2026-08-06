@@ -82,26 +82,25 @@ export function LogSightingForm() {
                 <input name="route" placeholder="Frankfurt–Vienna" />
               </label>
 
-              <div className="field-row">
-                <label className="field">
-                  <span>Origin</span>
-                  <input name="origin" placeholder="Frankfurt Hbf" />
-                </label>
-                <label className="field">
-                  <span>Destination</span>
-                  <input name="destination" placeholder="Wien Hbf" />
-                </label>
-              </div>
-
               <label className="field">
                 <span>Note</span>
                 <input name="note" placeholder="Livery, delay, anything worth remembering" />
               </label>
 
-              <label className="field">
-                <span>Miles travelled</span>
-                <input type="number" name="miles" min="0" placeholder="0" />
-              </label>
+              <div className="checkbox-group">
+                <label className="checkbox">
+                  <input type="checkbox" name="favourite" />
+                  <span>Favourite</span>
+                </label>
+                <label className="checkbox">
+                  <input type="checkbox" name="firstTime" />
+                  <span>First time seen</span>
+                </label>
+                <label className="checkbox">
+                  <input type="checkbox" name="rare" />
+                  <span>Rare sighting</span>
+                </label>
+              </div>
 
               {error && <p className="form-error">{error}</p>}
 

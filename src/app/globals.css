@@ -281,6 +281,36 @@ body {
   letter-spacing: 0.01em;
 }
 
+.ticket-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin: 0.1rem 0 0.05rem;
+}
+
+.badge {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 0.12rem 0.4rem;
+  border-radius: 2px;
+  border: 1px solid currentColor;
+  white-space: nowrap;
+}
+
+.badge-favourite {
+  color: var(--brass-amber);
+}
+
+.badge-first {
+  color: var(--steel-blue);
+}
+
+.badge-rare {
+  color: var(--rust-vermilion);
+}
+
 .ticket-route {
   font-family: var(--font-mono);
   font-size: 0.8rem;
@@ -477,6 +507,33 @@ body {
 .field select:focus-visible {
   outline: 2px solid var(--brass-amber);
   outline-offset: 1px;
+}
+
+.checkbox-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.1rem;
+  padding: 0.15rem 0;
+}
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  color: var(--soot-black);
+  cursor: pointer;
+}
+
+.checkbox input {
+  width: 15px;
+  height: 15px;
+  accent-color: var(--brass-amber);
+  cursor: pointer;
+}
+.checkbox input:focus-visible {
+  outline: 2px solid var(--brass-amber);
+  outline-offset: 2px;
 }
 
 .form-error {
