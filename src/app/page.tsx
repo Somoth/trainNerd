@@ -2,7 +2,7 @@ import type { CSSProperties } from "react";
 import { FlapBoard } from "@/components/FlapBoard";
 import { LogSightingForm } from "@/components/LogSightingForm";
 import { getSightings, getStats } from "@/db/queries";
-import { categoryColor } from "@/lib/categories";
+import { trainTypeColor, trainTypeLabel } from "@/lib/trainType";
 import { formatSpottedAt } from "@/lib/format";
 
 export default async function Home() {
@@ -37,20 +37,24 @@ export default async function Home() {
               <article
                 key={s.id}
                 className="ticket"
-                style={{ "--tab-color": categoryColor(s.category) } as CSSProperties}
+                style={{ "--tab-color": trainTypeColor(s.trainNumber) } as CSSProperties}
               >
                 <div className="ticket-tab" />
                 <div className="ticket-body">
                   <div className="ticket-main">
-                    <span className="ticket-category">{s.category}</span>
-                    <span className="ticket-class">
-                      {s.locoClass}
-                      {s.locoNumber ? ` · ${s.locoNumber}` : ""}
-                    </span>
+                    <span className="ticket-category">{trainTypeLabel(s.trainNumber)}</span>
+                    <span className="ticket-class">{s.trainNumber}</span>
+                    {(s.origin || s.destination) && (
+                      <span className="ticket-route">
+                        {s.origin ?? "?"} → {s.destination ?? "?"}
+                      </span>
+                    )}
+                    {s.operator && <span className="ticket-operator">{s.operator}</span>}
                     {s.note && <span className="ticket-note">{s.note}</span>}
                   </div>
                   <div className="ticket-meta">
-                    {s.location}
+                    {s.station}
+                    {s.country ? `, ${s.country}` : ""}
                     <br />
                     {formatSpottedAt(s.spottedAt)}
                   </div>
@@ -64,8 +68,8 @@ export default async function Home() {
 
       <section className="stats">
         <div className="stat">
-          <span className="stat-num">{stats.classesSpotted}</span>
-          <span className="stat-label">Classes spotted</span>
+          <span className="stat-num">{stats.trainsSpotted}</span>
+          <span className="stat-label">Trains spotted</span>
         </div>
         <div className="stat">
           <span className="stat-num">{stats.stationsVisited}</span>

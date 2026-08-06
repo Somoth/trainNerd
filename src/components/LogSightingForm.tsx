@@ -2,7 +2,6 @@
 
 import { useRef, useState, useTransition } from "react";
 import { logSighting } from "@/app/actions";
-import { CATEGORIES } from "@/lib/categories";
 
 export function LogSightingForm() {
   const [open, setOpen] = useState(false);
@@ -47,45 +46,61 @@ export function LogSightingForm() {
             <form ref={formRef} action={handleSubmit} className="modal-form">
               <div className="field-row">
                 <label className="field">
-                  <span>Class</span>
-                  <input name="locoClass" placeholder="Class 47" required />
+                  <span>Date</span>
+                  <input type="date" name="date" required />
                 </label>
                 <label className="field">
-                  <span>Number</span>
-                  <input name="locoNumber" placeholder="47.812" />
+                  <span>Time</span>
+                  <input type="time" name="time" required />
+                </label>
+              </div>
+
+              <div className="field-row">
+                <label className="field">
+                  <span>Station</span>
+                  <input name="station" placeholder="Frankfurt Hbf" required />
+                </label>
+                <label className="field">
+                  <span>Country</span>
+                  <input name="country" placeholder="Germany" />
+                </label>
+              </div>
+
+              <div className="field-row">
+                <label className="field">
+                  <span>Train number</span>
+                  <input name="trainNumber" placeholder="ICE 73" required />
+                </label>
+                <label className="field">
+                  <span>Operator</span>
+                  <input name="operator" placeholder="DB" />
                 </label>
               </div>
 
               <label className="field">
-                <span>Category</span>
-                <select name="category" defaultValue={CATEGORIES[0]} required>
-                  {CATEGORIES.map((c) => (
-                    <option key={c} value={c}>
-                      {c}
-                    </option>
-                  ))}
-                </select>
-              </label>
-
-              <label className="field">
-                <span>Location</span>
-                <input name="location" placeholder="Doncaster Works" required />
+                <span>Route</span>
+                <input name="route" placeholder="Frankfurt–Vienna" />
               </label>
 
               <div className="field-row">
                 <label className="field">
-                  <span>Spotted at</span>
-                  <input type="datetime-local" name="spottedAt" />
+                  <span>Origin</span>
+                  <input name="origin" placeholder="Frankfurt Hbf" />
                 </label>
                 <label className="field">
-                  <span>Miles travelled</span>
-                  <input type="number" name="miles" min="0" placeholder="0" />
+                  <span>Destination</span>
+                  <input name="destination" placeholder="Wien Hbf" />
                 </label>
               </div>
 
               <label className="field">
                 <span>Note</span>
-                <input name="note" placeholder="Livery, condition, anything worth remembering" />
+                <input name="note" placeholder="Livery, delay, anything worth remembering" />
+              </label>
+
+              <label className="field">
+                <span>Miles travelled</span>
+                <input type="number" name="miles" min="0" placeholder="0" />
               </label>
 
               {error && <p className="form-error">{error}</p>}
