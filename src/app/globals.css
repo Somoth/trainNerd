@@ -32,6 +32,54 @@ body {
   flex-direction: column;
 }
 
+/* ---------- Header ---------- */
+
+.site-header {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 1rem 1.5rem;
+}
+
+.btn-ghost {
+  font-family: var(--font-display);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 0.78rem;
+  color: var(--chalk-cream);
+  background: transparent;
+  border: 1px solid rgba(237, 230, 214, 0.35);
+  padding: 0.55rem 1rem;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+.btn-ghost:hover {
+  border-color: var(--brass-amber);
+  color: var(--brass-amber);
+}
+.btn-ghost:focus-visible {
+  outline: 2px solid var(--chalk-cream);
+  outline-offset: 3px;
+}
+
+/* ---------- Auth pages ---------- */
+
+.auth-page {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1.5rem;
+  background: radial-gradient(
+    ellipse 120% 90% at 50% -10%,
+    var(--signal-green-light) 0%,
+    var(--signal-green) 45%,
+    var(--soot-black) 100%
+  );
+}
+
 /* ---------- Hero ---------- */
 
 .hero {

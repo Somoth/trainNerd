@@ -1,9 +1,15 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { auth } from "@clerk/nextjs/server";
 import { insertSighting } from "@/db/queries";
 
 export async function logSighting(formData: FormData) {
+  const { userId } = await auth();
+  if (!userId) {
+    throw new Error("Sign in to log a sighting.");
+  }
+
   const trainNumber = String(formData.get("trainNumber") ?? "").trim();
   const operator = String(formData.get("operator") ?? "").trim();
   const route = String(formData.get("route") ?? "").trim();

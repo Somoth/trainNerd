@@ -1,9 +1,11 @@
 "use client";
 
 import { useRef, useState, useTransition } from "react";
+import { SignInButton, useUser } from "@clerk/nextjs";
 import { logSighting } from "@/app/actions";
 
 export function LogSightingForm() {
+  const { isSignedIn, isLoaded } = useUser();
   const [open, setOpen] = useState(false);
   const [pending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
@@ -22,11 +24,23 @@ export function LogSightingForm() {
     });
   }
 
+  if (!isLoaded) {
+    return null;
+  }
+
   return (
     <>
-      <button className="btn" type="button" onClick={() => setOpen(true)}>
-        + Log a sighting
-      </button>
+      {isSignedIn ? (
+        <button className="btn" type="button" onClick={() => setOpen(true)}>
+          + Log a sighting
+        </button>
+      ) : (
+        <SignInButton mode="modal">
+          <button className="btn" type="button">
+            Sign in to log a sighting
+          </button>
+        </SignInButton>
+      )}
 
       {open && (
         <div className="modal-overlay" onClick={() => setOpen(false)}>
