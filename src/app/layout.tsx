@@ -19,7 +19,19 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
               </SignInButton>
             </Show>
             <Show when="signed-in">
-              <UserButton />
+              <UserButton
+                appearance={{
+                  elements: {
+                    userButtonTrigger: "cn-user-trigger",
+                    userButtonAvatarBox: "cn-user-avatar-box",
+                    userButtonAvatarImage: "cn-user-avatar-image",
+                    userButtonPopoverCard: "cn-user-popover",
+                    userButtonPopoverActionButton: "cn-user-popover-action",
+                    userButtonPopoverActionButtonIcon: "cn-user-popover-action",
+                    userPreviewMainIdentifier: "cn-user-popover-identifier",
+                  },
+                }}
+              />
             </Show>
           </header>
           {children}
