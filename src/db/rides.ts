@@ -18,7 +18,7 @@ type PlannedRideRow = {
   train_number: string | null;
   operator: string | null;
   route: string | null;
-  planned_date: string;
+  planned_date: Date;
   note: string | null;
   is_done: boolean;
   rating: number | null;
@@ -26,13 +26,23 @@ type PlannedRideRow = {
   created_at: string;
 };
 
+// The driver parses Postgres DATE columns into a Date at local midnight,
+// so pull the calendar date back out with local getters (not toISOString,
+// which would shift the date on a server whose TZ isn't UTC).
+function toDateOnlyString(d: Date): string {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
+}
+
 function toPlannedRide(r: PlannedRideRow): PlannedRide {
   return {
     id: r.id,
     trainNumber: r.train_number,
     operator: r.operator,
     route: r.route,
-    plannedDate: r.planned_date,
+    plannedDate: toDateOnlyString(r.planned_date),
     note: r.note,
     isDone: r.is_done,
     rating: r.rating,
