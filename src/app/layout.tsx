@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { ClerkProvider, Show, SignInButton, UserButton } from "@clerk/nextjs";
 import "./globals.css";
 
@@ -19,6 +20,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
               </SignInButton>
             </Show>
             <Show when="signed-in">
+              <Link href="/rides" className="btn-ghost">
+                Planned rides
+              </Link>
               <UserButton
                 appearance={{
                   elements: {

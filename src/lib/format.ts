@@ -10,3 +10,13 @@ export function formatSpottedAt(iso: string) {
   }).format(date);
   return `${time} · ${day}`;
 }
+
+export function formatPlannedDate(isoDate: string) {
+  const date = new Date(`${isoDate}T00:00:00Z`);
+  return new Intl.DateTimeFormat("en-GB", {
+    weekday: "short",
+    day: "numeric",
+    month: "short",
+    timeZone: "UTC",
+  }).format(date);
+}
