@@ -83,6 +83,8 @@ body {
 .cn-flap-avatar {
   position: relative;
   overflow: hidden;
+  width: 38px !important;
+  height: 38px !important;
   padding: 3px !important;
   border: none !important;
   border-radius: 4px !important;
@@ -90,17 +92,6 @@ body {
   box-shadow: 0 2px 0 rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(237, 230, 214, 0.1);
   transform-origin: center;
   transition: box-shadow 0.15s ease;
-}
-.cn-flap-avatar::after {
-  content: "";
-  position: absolute;
-  inset: 3px;
-  top: 50%;
-  height: 1px;
-  background: rgba(0, 0, 0, 0.65);
-  transform: translateY(-0.5px);
-  z-index: 2;
-  pointer-events: none;
 }
 .cn-user-trigger:hover .cn-flap-avatar {
   box-shadow: 0 2px 0 rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(217, 142, 59, 0.6);
