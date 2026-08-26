@@ -27,8 +27,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
                 appearance={{
                   elements: {
                     userButtonTrigger: "cn-user-trigger",
-                    userButtonAvatarBox: "cn-user-avatar-box",
-                    userButtonAvatarImage: "cn-user-avatar-image",
+                    userButtonAvatarBox: "cn-flap-avatar",
+                    userButtonAvatarBox__open: "cn-flap-avatar-open",
+                    userButtonAvatarImage: "cn-flap-avatar-image",
                     userButtonPopoverCard: "cn-user-popover",
                     userButtonPopoverActionButton: "cn-user-popover-action",
                     userButtonPopoverActionButtonIcon: "cn-user-popover-action",
