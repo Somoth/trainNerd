@@ -16,6 +16,8 @@ await sql`
     is_favourite boolean NOT NULL DEFAULT false,
     is_first_time boolean NOT NULL DEFAULT false,
     is_rare boolean NOT NULL DEFAULT false,
+    lat double precision,
+    lng double precision,
     spotted_at timestamptz NOT NULL DEFAULT now(),
     created_at timestamptz NOT NULL DEFAULT now()
   )

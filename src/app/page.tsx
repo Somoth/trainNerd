@@ -1,12 +1,16 @@
 import type { CSSProperties } from "react";
 import { FlapBoard } from "@/components/FlapBoard";
 import { LogSightingForm } from "@/components/LogSightingForm";
+import { SightingsMapClient as SightingsMap } from "@/components/SightingsMapClient";
 import { getSightings, getStats } from "@/db/queries";
 import { trainTypeColor, trainTypeLabel } from "@/lib/trainType";
 import { formatSpottedAt } from "@/lib/format";
 
 export default async function Home() {
   const [sightings, stats] = await Promise.all([getSightings(), getStats()]);
+  const mappedSightings = sightings.filter(
+    (s): s is typeof s & { lat: number; lng: number } => s.lat !== null && s.lng !== null,
+  );
 
   return (
     <div className="page">
@@ -68,6 +72,23 @@ export default async function Home() {
               </article>
             ))}
           </div>
+        )}
+      </section>
+
+      <section className="map-section">
+        <div className="section-head">
+          <span className="eyebrow">the map</span>
+          <h2 className="section-title">Where you&apos;ve been</h2>
+          <p className="section-desc">Every geocoded station from the log, pinned.</p>
+        </div>
+
+        {mappedSightings.length === 0 ? (
+          <div className="empty-state">
+            <p className="empty-title">No pins yet.</p>
+            <p className="empty-desc">Log a sighting and it&apos;ll show up here once geocoded.</p>
+          </div>
+        ) : (
+          <SightingsMap sightings={mappedSightings} />
         )}
       </section>
 

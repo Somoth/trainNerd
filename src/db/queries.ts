@@ -11,6 +11,8 @@ export type Sighting = {
   isFavourite: boolean;
   isFirstTime: boolean;
   isRare: boolean;
+  lat: number | null;
+  lng: number | null;
   spottedAt: string;
 };
 
@@ -25,6 +27,8 @@ type SightingRow = {
   is_favourite: boolean;
   is_first_time: boolean;
   is_rare: boolean;
+  lat: number | null;
+  lng: number | null;
   spotted_at: string;
 };
 
@@ -32,7 +36,7 @@ export async function getSightings(limit = 20): Promise<Sighting[]> {
   const sql = getDb();
   const rows = (await sql`
     SELECT id, train_number, operator, route, station, country, note,
-           is_favourite, is_first_time, is_rare, spotted_at
+           is_favourite, is_first_time, is_rare, lat, lng, spotted_at
     FROM sightings
     ORDER BY spotted_at DESC
     LIMIT ${limit}
@@ -48,6 +52,8 @@ export async function getSightings(limit = 20): Promise<Sighting[]> {
     isFavourite: r.is_favourite,
     isFirstTime: r.is_first_time,
     isRare: r.is_rare,
+    lat: r.lat,
+    lng: r.lng,
     spottedAt: r.spotted_at,
   }));
 }
@@ -91,11 +97,13 @@ export async function insertSighting(data: {
   isFavourite?: boolean;
   isFirstTime?: boolean;
   isRare?: boolean;
+  lat?: number;
+  lng?: number;
   spottedAt?: string;
 }) {
   const sql = getDb();
   await sql`
-    INSERT INTO sightings (train_number, operator, route, station, country, note, is_favourite, is_first_time, is_rare, spotted_at)
+    INSERT INTO sightings (train_number, operator, route, station, country, note, is_favourite, is_first_time, is_rare, lat, lng, spotted_at)
     VALUES (
       ${data.trainNumber},
       ${data.operator ?? null},
@@ -106,6 +114,8 @@ export async function insertSighting(data: {
       ${data.isFavourite ?? false},
       ${data.isFirstTime ?? false},
       ${data.isRare ?? false},
+      ${data.lat ?? null},
+      ${data.lng ?? null},
       ${data.spottedAt ?? new Date().toISOString()}
     )
   `;

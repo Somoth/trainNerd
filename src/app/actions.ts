@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { auth } from "@clerk/nextjs/server";
 import { insertSighting } from "@/db/queries";
+import { geocodeStation } from "@/lib/geocode";
 
 export async function logSighting(formData: FormData) {
   const { userId } = await auth();
@@ -31,6 +32,8 @@ export async function logSighting(formData: FormData) {
     throw new Error("That date and time couldn't be read.");
   }
 
+  const point = await geocodeStation(station, country || undefined);
+
   await insertSighting({
     trainNumber,
     operator: operator || undefined,
@@ -41,6 +44,8 @@ export async function logSighting(formData: FormData) {
     isFavourite,
     isFirstTime,
     isRare,
+    lat: point?.lat,
+    lng: point?.lng,
     spottedAt: spottedAt.toISOString(),
   });
 
